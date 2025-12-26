@@ -14,3 +14,16 @@ if (experience < 2) {
 } else {
   console.log("Status: Intermediate");
 }
+
+// Function to greet
+function showStatus(name, experience) {
+    if (experience < 2) {
+        console.log(name + " is a Beginner");
+    } else {
+        console.log(name + " is an Intermediate learner");
+    }   
+}
+
+// Call the function
+showStatus("kapil", 1);
+showStatus("Alice", 3);
