@@ -24,6 +24,11 @@ function showStatus(name, experience) {
     }   
 }
 
-// Call the function
-showStatus("kapil", 1);
-showStatus("Alice", 3);
+// Select elements
+let button = document.getElementById("clickBtn");
+let output = document.getElementById("output");
+
+// Add event
+button.addEventListener("click", function () {
+  output.innerText = "Button clicked! JavaScript is working 🚀";
+});
