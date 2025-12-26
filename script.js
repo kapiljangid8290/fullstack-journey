@@ -91,13 +91,70 @@ document.addEventListener("DOMContentLoaded", function () {
   const submitBtn = document.getElementById("submitQuiz");
   const finalResult = document.getElementById("finalResult");
 
+  // Disable submit initially
+  submitBtn.disabled = true;
+
+  // ✅ Check if all questions are answered
+  function checkAllAnswered() {
+    for (let i = 1; i <= 5; i++) {
+      const selected = document.querySelector(`input[name="q${i}"]:checked`);
+      if (!selected) {
+        submitBtn.disabled = true;
+        return;
+      }
+    }
+    submitBtn.disabled = false;
+  }
+
+  function scrollToFirstUnanswered() {
+  const questions = document.querySelectorAll(".question");
+
+  for (let i = 0; i < questions.length; i++) {
+    const qNumber = i + 1;
+    const checked = document.querySelector(`input[name="q${qNumber}"]:checked`);
+
+    if (!checked) {
+      questions[i].scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+      });
+      break;
+    }
+  }
+}
+
+
+  // 👂 Listen for radio changes
+  document.querySelectorAll('input[type="radio"]').forEach(radio => {
+    radio.addEventListener("change", () => {
+      checkAllAnswered();
+      highlightUnanswered();
+    });
+  });
+
+  // 🎯 Highlight unanswered questions
+  function highlightUnanswered() {
+    document.querySelectorAll(".question").forEach((question, index) => {
+      const qNumber = index + 1;
+      const checked = document.querySelector(`input[name="q${qNumber}"]:checked`);
+
+      if (!checked) {
+        question.style.border = "2px solid red";
+        question.style.background = "#ffecec";
+      } else {
+        question.style.border = "none";
+        question.style.background = "transparent";
+      }
+    });
+  }
+
+  // 🚀 Submit logic
   submitBtn.addEventListener("click", function () {
     let totalScore = 0;
     let unanswered = [];
 
     for (let i = 1; i <= 5; i++) {
       const selected = document.querySelector(`input[name="q${i}"]:checked`);
-
       if (!selected) {
         unanswered.push(i);
       } else {
@@ -105,14 +162,14 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-    // Validation
     if (unanswered.length > 0) {
+      highlightUnanswered();
+      scrollToFirstUnanswered();
       finalResult.innerText =
         "Please answer question(s): " + unanswered.join(", ");
       return;
     }
 
-    // Result logic
     if (totalScore <= 10) {
       finalResult.innerText = "Result: Beginner Level 🚀";
     } else if (totalScore <= 18) {
@@ -123,6 +180,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
 });
+
 
 
         
