@@ -56,7 +56,7 @@ submitBtn.addEventListener("Click", function () {
     });*/
 
 
-    document.addEventListener("DOMContentLoaded", function () {
+   /* document.addEventListener("DOMContentLoaded", function () {
 
   let submitBtn = document.getElementById("submitQuiz");
   let finalResult = document.getElementById("finalResult");
@@ -84,7 +84,46 @@ submitBtn.addEventListener("Click", function () {
     }
   });
 
+});*/
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const submitBtn = document.getElementById("submitQuiz");
+  const finalResult = document.getElementById("finalResult");
+
+  submitBtn.addEventListener("click", function () {
+    let totalScore = 0;
+    let unanswered = [];
+
+    for (let i = 1; i <= 5; i++) {
+      const selected = document.querySelector(`input[name="q${i}"]:checked`);
+
+      if (!selected) {
+        unanswered.push(i);
+      } else {
+        totalScore += Number(selected.value);
+      }
+    }
+
+    // Validation
+    if (unanswered.length > 0) {
+      finalResult.innerText =
+        "Please answer question(s): " + unanswered.join(", ");
+      return;
+    }
+
+    // Result logic
+    if (totalScore <= 10) {
+      finalResult.innerText = "Result: Beginner Level 🚀";
+    } else if (totalScore <= 18) {
+      finalResult.innerText = "Result: Intermediate Level 💪";
+    } else {
+      finalResult.innerText = "Result: Expert Level 🔥";
+    }
+  });
+
 });
+
 
         
     
