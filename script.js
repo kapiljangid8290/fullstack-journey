@@ -90,6 +90,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const submitBtn = document.getElementById("submitQuiz");
   const finalResult = document.getElementById("finalResult");
+  const resetBtn = document.getElementById("resetQuiz");
+  const progressText = document.getElementById("progressText");
+
+
 
   // Disable submit initially
   submitBtn.disabled = true;
@@ -129,6 +133,7 @@ document.addEventListener("DOMContentLoaded", function () {
     radio.addEventListener("change", () => {
       checkAllAnswered();
       highlightUnanswered();
+      updateProgress();
     });
   });
 
@@ -178,6 +183,45 @@ document.addEventListener("DOMContentLoaded", function () {
       finalResult.innerText = "Result: Expert Level 🔥";
     }
   });
+  resetBtn.addEventListener("click", function () {
+  // Uncheck all radio buttons
+  document.querySelectorAll('input[type="radio"]').forEach(radio => {
+    radio.checked = false;
+    progressText.innerText = "Answered 0 of 5";
+
+  });
+
+  // Remove highlights
+  document.querySelectorAll(".question").forEach(question => {
+    question.style.border = "none";
+    question.style.background = "transparent";
+  });
+
+  // Clear result text
+  finalResult.innerText = "";
+
+  // Disable submit again
+  submitBtn.disabled = true;
+
+  // Scroll to top
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+});
+function updateProgress() {
+  let answeredCount = 0;
+
+  for (let i = 1; i <= 5; i++) {
+    if (document.querySelector(`input[name="q${i}"]:checked`)) {
+      answeredCount++;
+    }
+  }
+
+  progressText.innerText = `Answered ${answeredCount} of 5`;
+}
+
+
 
 });
 
